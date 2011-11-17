@@ -1,0 +1,61 @@
+NANOXML = /net/raquella/ldc/redes/nanoxml/java/nanoxml-lite-2.2.3.jar
+CLASSPATH = $(NANOXML):.
+GCJ_OPTS = -classpath $(CLASSPATH)
+JAVAC = gcj
+OBJ = nanoxml-lite-2.2.3.o Insumo.o Producto.o Suplidor.o PNResolvThread.o ProcesarPedidoPn1Thread.o PN1ServerThread.o
+
+all : com pn2 pn1
+
+com : com.o $(OBJ) ComThread.o
+	$(JAVAC) $(GCJ_OPTS) --main=com -o com com.o $(OBJ) ComThread.o
+
+pn2 : pn2.o $(OBJ) ProcesarPedidoThread.o PN2ServerThread.o Pn2Thread.o
+	$(JAVAC) $(GCJ_OPTS) --main=pn2 -o pn2 pn2.o $(OBJ) ProcesarPedidoThread.o PN2ServerThread.o Pn2Thread.o
+
+pn1 : pn1.o $(OBJ)
+	$(JAVAC) $(GCJ_OPTS) --main=pn1 -o pn1 pn1.o $(OBJ)
+
+nanoxml-lite-2.2.3.o: $(NANOXML)
+	$(JAVAC) $(GCJ_OPTS) -c $(NANOXML)
+
+com.o : com.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c com.java
+
+pn2.o : pn2.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c pn2.java
+
+pn1.o : pn1.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c pn1.java
+
+ComThread.o : ComThread.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c ComThread.java
+
+Pn2Thread.o : Pn2Thread.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c Pn2Thread.java
+
+PN2ServerThread.o : PN2ServerThread.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c PN2ServerThread.java
+
+PN1ServerThread.o : PN1ServerThread.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c PN1ServerThread.java
+
+PNResolvThread.o : PNResolvThread.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c PNResolvThread.java
+
+ProcesarPedidoThread.o : ProcesarPedidoThread.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c ProcesarPedidoThread.java
+
+ProcesarPedidoPn1Thread.o : ProcesarPedidoPn1Thread.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c ProcesarPedidoPn1Thread.java
+
+Suplidor.o : Suplidor.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c Suplidor.java
+
+Producto.o : Producto.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c Producto.java
+
+Insumo.o : Insumo.java $(CLASSPATH)
+	$(JAVAC) $(GCJ_OPTS) -c Insumo.java
+
+clean :
+	rm -rf *.o pn1 pn2 com
